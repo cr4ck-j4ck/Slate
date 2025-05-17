@@ -32,17 +32,7 @@ Crafted with care using fundamental web technologies for maximum portability and
 *   **SVG**: For the crisp, scalable custom cursor and the dynamic splash animation.
 *   **FontAwesome & Google Fonts**: Adding that extra touch of typographic elegance.
 
----
 
-## 🖼️ Glimpses of HoloBoard
-
-| Splash Screen Showcase         | The Creative Canvas in Action      |
-| :----------------------------: | :--------------------------------: |
-| ![Splash](./screenshot-splash.png) | ![Main UI](./screenshot-main.png)   |
-
-> **Pro Tip:** Replace these placeholders with your own stunning screenshots to truly showcase HoloBoard's brilliance!
-
----
 
 ## ⚡ Get Sketching in Seconds!
 
