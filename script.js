@@ -493,29 +493,35 @@ document.addEventListener('DOMContentLoaded', () => {
         splashPencil.style.visibility = 'hidden';
 
         let start = null;
-        const duration = 5500; // 5.5 seconds for a nice, long animation
+        const pencilAnimationDuration = 3500; // 3.5 seconds for pencil to trace path
+        const totalSplashDuration = 5500; // Total splash screen time remains 5.5 seconds
+
         function animateSplash(ts) {
             if (!start) start = ts;
             const elapsed = ts - start;
-            const progress = Math.min(elapsed / duration, 1);
-            // Animate path
-            splashPath.style.strokeDashoffset = pathLength * (1 - progress);
-            // Animate pencil position (with offset)
-            const point = splashPath.getPointAtLength(pathLength * progress);
-            splashPencil.style.left = (splashPath.getBoundingClientRect().left + point.x - 37) + 'px';
-            splashPencil.style.top = (splashPath.getBoundingClientRect().top + point.y - 5) + 'px';
+
+            const pencilProgress = Math.min(elapsed / pencilAnimationDuration, 1);
+            splashPath.style.strokeDashoffset = pathLength * (1 - pencilProgress);
+            
+            const point = splashPath.getPointAtLength(pathLength * pencilProgress);
+            // Aligning splash pencil tip with board pencil tip using offset (-56, -20)
+            splashPencil.style.left = (splashPath.getBoundingClientRect().left + point.x - 56) + 'px';
+            splashPencil.style.top = (splashPath.getBoundingClientRect().top + point.y - 20) + 'px';
             splashPencil.style.visibility = 'visible';
-            if (progress < 1) {
+
+            if (pencilProgress < 1) {
                 requestAnimationFrame(animateSplash);
-            } else {
-                // Wait, then slide up
+            } else if (!splash.classList.contains('splash-hide')) {
+                // Pencil animation finished, start shutter immediately
+                splash.classList.add('splash-hide');
+                document.body.classList.remove('splash-active');
                 setTimeout(() => {
-                    splash.classList.add('splash-hide');
-                    document.body.classList.remove('splash-active');
-                    setTimeout(() => {
-                        splash.style.display = 'none';
-                    }, 1000);
-                }, 400);
+                    splash.style.display = 'none';
+                }, 1000); // Shutter animation time (CSS transition)
+            }
+            // Keep requesting frames if totalSplashDuration is not met for other effects, remove if not needed.
+            if(elapsed < totalSplashDuration && pencilProgress === 1){
+                 requestAnimationFrame(animateSplash); // keep alive if splash needs to wait for other things
             }
         }
         requestAnimationFrame(animateSplash);
