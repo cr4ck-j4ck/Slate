@@ -2,7 +2,7 @@
 
 Ever felt boxed in by typical drawing apps? HoloBoard shatters those limits, offering a **futuristic, neon-infused canvas** designed to spark creativity and impress. Whether you're a hackathon warrior, a digital artist, or just someone who loves to sketch, HoloBoard provides a uniquely fluid and visually stunning experience.
 
-![splash](./screenshot-splash.png) <!-- 🔥 Replace with your electrifying splash screen! -->
+![splash](./image.png) <!-- 🔥 Replace with your electrifying splash screen! -->
 
 ---
 
