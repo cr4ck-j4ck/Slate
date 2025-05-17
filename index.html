@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoloBoard - Digital Art Canvas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Rajdhani:wght@300;500;700&family=Pacifico&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Splash Loader -->
+    <div id="splash-loader">
+        <div class="splash-title">built by cr4ck-j4ck</div>
+        <svg id="splash-path" width="600" height="250" viewBox="0 0 600 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="splash-curve"
+                d="M50,150 C50,150 70,50 150,120 S250,200 300,100 S400,0 450,100 S500,220 550,150 C550,150 500,50 400,100 C300,150 200,50 100,120 C0,190 50,150 50,150 Z"
+                stroke="#222" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <img id="splash-pencil" src="pencil-svgrepo-com.svg" width="40" height="40" alt="Pencil" />
+    </div>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div id="custom-cursor" aria-hidden="true"></div>
+    <div class="app-container">
+        <!-- Sidebar Toolbar -->
+        <div class="toolbar" role="toolbar" aria-label="Drawing Tools">
+            <div class="logo">
+                <span class="logo-icon" role="img" aria-label="HoloBoard Logo">🔮</span>
+                <h1>HoloBoard</h1>
+            </div>
+
+            <!-- Tool Groups -->
+            <div class="tool-section">
+                <h2 id="tools-heading">Tools</h2>
+                <div class="tool-group" role="group" aria-labelledby="tools-heading">
+                    <button class="tool-btn active" data-tool="brush" title="Brush Tool" aria-label="Brush Tool">
+                        <i class="fas fa-paint-brush" aria-hidden="true"></i>
+                    </button>
+                    <button class="tool-btn" data-tool="eraser" title="Eraser" aria-label="Eraser">
+                        <i class="fas fa-eraser" aria-hidden="true"></i>
+                    </button>
+                    <button class="tool-btn" data-tool="shapes" title="Shapes" aria-label="Shapes">
+                        <i class="fas fa-shapes" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Brush Settings -->
+            <div class="tool-section">
+                <h2 id="brush-settings-heading">Brush Settings</h2>
+                <div class="brush-settings" role="group" aria-labelledby="brush-settings-heading">
+                    <div class="size-control">
+                        <label for="brush-size">Size</label>
+                        <div class="size-slider">
+                            <input type="range" id="brush-size" min="1" max="50" value="10" aria-label="Brush Size">
+                            <div class="size-preview" aria-hidden="true"></div>
+                        </div>
+                    </div>
+
+                    <div class="brush-type">
+                        <label id="brush-style-label">Style</label>
+                        <div class="brush-options" role="group" aria-labelledby="brush-style-label">
+                            <button class="brush-option active" data-brush="normal" title="Normal" aria-label="Normal Brush">
+                                <i class="fas fa-circle" aria-hidden="true"></i>
+                            </button>
+                            <button class="brush-option" data-brush="neon" title="Neon Glow" aria-label="Neon Glow Brush">
+                                <i class="fas fa-sun" aria-hidden="true"></i>
+                            </button>
+                            <button class="brush-option" data-brush="rainbow" title="Rainbow" aria-label="Rainbow Brush">
+                                <i class="fas fa-rainbow" aria-hidden="true"></i>
+                            </button>
+                            <button class="brush-option" data-brush="sparkle" title="Sparkle" aria-label="Sparkle Brush">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color Tools -->
+            <div class="tool-section">
+                <h2 id="colors-heading">Colors</h2>
+                <div class="color-tools" role="group" aria-labelledby="colors-heading">
+                    <div class="color-picker">
+                        <input type="color" id="color-picker" value="#00ff94" aria-label="Color Picker">
+                        <label for="color-picker" class="color-preview" aria-hidden="true"></label>
+                    </div>
+                    <div class="color-presets" role="group" aria-label="Color Presets">
+                        <button class="color-preset" style="--color: #00ff94" aria-label="Neon Green"></button>
+                        <button class="color-preset" style="--color: #ff00ff" aria-label="Neon Pink"></button>
+                        <button class="color-preset" style="--color: #00ffff" aria-label="Neon Blue"></button>
+                        <button class="color-preset" style="--color: #ffffff" aria-label="White"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="tool-section">
+                <h2 id="actions-heading">Actions</h2>
+                <div class="action-buttons" role="group" aria-labelledby="actions-heading">
+                    <button class="action-btn" id="undo" title="Undo" aria-label="Undo">
+                        <i class="fas fa-undo" aria-hidden="true"></i>
+                    </button>
+                    <button class="action-btn" id="redo" title="Redo" aria-label="Redo">
+                        <i class="fas fa-redo" aria-hidden="true"></i>
+                    </button>
+                    <button class="action-btn" id="clear" title="Clear Canvas" aria-label="Clear Canvas">
+                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" id="save" title="Save as PNG" aria-label="Save as PNG">
+                        <i class="fas fa-download" aria-hidden="true"></i>
+                    </button>
+                    <button class="action-btn" id="export" title="Export Data" aria-label="Export Data">
+                        <i class="fas fa-file-export" aria-hidden="true"></i>
+                    </button>
+                    <button class="action-btn" id="import" title="Import Data" aria-label="Import Data">
+                        <i class="fas fa-file-import" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Canvas Area -->
+        <div class="canvas-container" role="main">
+            <canvas id="holoboard" aria-label="Drawing Canvas"></canvas>
+            <div class="canvas-overlay">
+                <div class="grid" aria-hidden="true"></div>
+            </div>
+            <!-- Mini Preview -->
+            <div class="mini-preview" aria-label="Canvas Preview">
+                <canvas id="preview-canvas"></canvas>
+            </div>
+        </div>
+
+        <!-- Shape Panel (Hidden by default) -->
+        <div class="shape-panel" hidden role="dialog" aria-label="Shape Tools">
+            <div class="shape-options">
+                <button class="shape-btn" data-shape="rectangle" aria-label="Rectangle">
+                    <i class="fas fa-square" aria-hidden="true"></i>
+                </button>
+                <button class="shape-btn" data-shape="circle" aria-label="Circle">
+                    <i class="fas fa-circle" aria-hidden="true"></i>
+                </button>
+                <button class="shape-btn" data-shape="line" aria-label="Line">
+                    <i class="fas fa-minus" aria-hidden="true"></i>
+                </button>
+                <button class="shape-btn" data-shape="triangle" aria-label="Triangle">
+                    <i class="fas fa-play" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
